@@ -33,7 +33,7 @@ MPORT=3748
 # start capturing packets
 echo "Start capturing..."
 for server in ${capture_servers[@]}; do
-  ssh -Y $username@$server "tshark -w ~/$server-eth1.pcap -i eth1 -Q &"
+  ssh -Y $username@$server "tshark -w ~/$server-eth1.pcap -i eth1>/dev/null 2>&1 &"
 done
 
 sleep 10
@@ -44,7 +44,7 @@ for server in ${receive_servers[@]}; do
   ssh -Y $username@$server << EOF
 echo "JOIN $MIP PORT $MPORT
 listen UDP $MPORT" > receiver.mgn
-mgen input receiver.mgn &
+mgen input receiver.mgn>/dev/null 2>&1 &
 EOF
 done
 
@@ -53,7 +53,7 @@ sleep 60
 # start sending packets
 echo "Start sending UDP packets to $MIP:$MPORT..."
 for server in ${send_servers[@]}; do
-  ssh -Y $username@$server "mgen event \"0.0 on 1 UDP DST $MIP/$MPORT periodic [0.5 500] \" &"
+  ssh -Y $username@$server "mgen event \"0.0 on 1 UDP DST $MIP/$MPORT periodic [0.5 500] \">/dev/null 2>&1 &"
 done
 
 sleep 60
