@@ -9,7 +9,7 @@ PCnet16=Summer
 PCnet17=Autumn
 PCnet18=May
 PCnet19=October
-capture_servers=($Summer $Autumn $May $October)
+capture_servers=($PCnet16 $PCnet17 $PCnet18 $PCnet19)
 
 # receiver network definition
 MCR1net16=Fall
@@ -17,14 +17,14 @@ MCR1net17=November
 MCR2net17=Spring
 MCR1net18=July
 MCR1net19=Solstice
-receive_servers=($Fall $November $Spring $July $Solstice)
+receive_servers=($MCR1net16 $MCR1net17 $MCR2net17 $MCR1net18 $MCR1net19)
 
 # sender network definition
 MCSnet16=April
 MCSnet17=August
 MCSnet18=Winter
 MCSnet19=Year
-send_servers=($April $August $Winter $Year)
+send_servers=($MCSnet16 $MCSnet17 $MCSnet18 $MCSnet19)
 
 # multicast group definition
 MIP=225.128.127.4
