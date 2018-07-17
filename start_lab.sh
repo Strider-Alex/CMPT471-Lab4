@@ -32,7 +32,7 @@ MPORT=3748
 
 # start capturing packets
 echo "Start capturing..."
-for server in $capture_servers; do
+for server in ${capture_servers[@]}; do
   ssh -Y $username@$server "tshark -w ~/$server-eth1.pcap -i eth1 -Q &"
 done
 
@@ -40,7 +40,7 @@ sleep 10
 
 # join multicast groups
 echo "Joining multicast address: $MIP..."
-for server in $receive_servers; do
+for server in ${receive_servers[@]}; do
   ssh -Y $username@$server << EOF
 echo "JOIN $MIP PORT $MPORT
 listen UDP $MPORT" > receiver.mgn
@@ -52,7 +52,7 @@ sleep 60
 
 # start sending packets
 echo "Start sending UDP packets to $MIP:$MPORT..."
-for server in $send_servers; do
+for server in ${send_servers[@]}; do
   ssh -Y $username@$server "mgen event \"0.0 on 1 UDP DST $MIP/$MPORT periodic [0.5 500] \" &"
 done
 
@@ -60,7 +60,7 @@ sleep 60
 
 #  stop sending packets
 echo "Stop sending packets..."
-for server in $send_servers; do
+for server in ${send_servers[@]}; do
   ssh -Y $username@$server "killall mgen"
 done
 
@@ -68,7 +68,7 @@ sleep 60
 
 # exit multicast groups
 echo "Exiting multicast address: $MIP..."
-for server in $receive_servers; do
+for server in ${receive_servers[@]}; do
   ssh -Y $username@$server << EOF
 killall mgen
 EOF
@@ -78,7 +78,7 @@ sleep 60
 
 # stop capturing packets and collect results
 echo "Stop capturing..."
-for server in $capture_servers; do
+for server in ${capture_servers[@]}; do
   ssh -Y $username@$server << EOF
 killall tshark
 echo "Collecting results from $server..."
